@@ -50,14 +50,16 @@ class Module implements AutoloaderProviderInterface
         if($this->acl->hasResource($controller)){
             $access = $this->acl->isAllowed($role,$controller,$action);
             if(!$access){
-                $e->getRouteMatch()->setParam('controller', 'Guestbook\Controller\Admin');
-                $e->getRouteMatch()->setParam('action', 'authFalse');
+                $e->getRouteMatch()->setParam('controller', 'Guestbook\Controller\Auth');
+                $e->getRouteMatch()->setParam('action', 'toIndex');
             }
         }
         
         if($controller === 'Guestbook\Controller\Index'){
-            if($this->acl->isAllowed($role,'Guestbook\Controller\Admin')){
-                $e->getRouteMatch()->setParam('controller', 'Guestbook\Controller\Admin');
+            if($this->acl->isAllowed($role,'Guestbook\Controller\Admin') &&
+                $e->getRouteMatch()->getParam('action') === 'index')
+            {
+                $e->getRouteMatch()->setParam('controller', 'Guestbook\Controller\Auth');
                 $e->getRouteMatch()->setParam('action', 'toAdmin');
             }
         }

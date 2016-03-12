@@ -1,3 +1,14 @@
+<!---------------------------------------------------------------------->
+<!----------------------  GUEST INDEX  -------------------------------->
+<!--------------------------------------------------------------------->
+<script> var role = 'index'; </script>
+<script src="/js/guestbook/actions.js" type="text/javascript"></script>
+<script src="/js/guestbook/ajax.js" type="text/javascript"></script>
+<script src="/js/guestbook/main-functions.js" type="text/javascript"></script>
+<script src="/js/guestbook/main.js" type="text/javascript"></script>
+<!---------------------------------------------------------------------->
+<!-----------  Modal Singin as Administrator  --------------------------->
+<!--------------------------------------------------------------------->
 <div class="row">
     <div class="col-md-2">
         <button class="btn btn-primary" data-toggle="modal" data-target="#loginAdminModal">
@@ -8,36 +19,26 @@
         <?php include (__DIR__.'/../../layout/messenger.php'); ?>
     </div>
 </div>
+<hr/>
 <div class="modal fade" id="loginAdminModal" tabindex="-1" role="dialog" aria-labelledby="loginAdminModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Singin as Administrator</h4>
-      </div>
-      <div class="modal-body">
-        <?php
-            $form = $this->form;
-            $form->prepare();
-            $form->setAttribute('action', $this->url('guestbook', array('controller'=>'admin','action'=>'login')));
-            echo $this->form()->openTag($form);
-        ?>
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-                <form class="form-group">
-                    <?php
-                        echo $this->formLabel($form->get('adm_pwd'));
-                        echo $this->formElement($form->get('adm_pwd'));
-                    ?>
-                </form>
-            </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <?php
-            echo $this->formElement($form->get('submit'));
-        ?>
-      </div>
+  <?php
+    include (__DIR__.'/../../layout/modal_singin.phtml');
+  ?>
+</div>
+
+<!---------------------------------------------------------------------->
+<!--------------------  Modal Edit Message  --------------------------->
+<!--------------------------------------------------------------------->
+<div class="row">
+    <div class="col-md-2">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#editMessageModal">
+                Create new Message
+        </button>
     </div>
-  </div>
+</div>
+<hr/>
+<div class="modal fade" id="editMessageModal" tabindex="-1" role="dialog" aria-labelledby="loginAdminModalLabel" aria-hidden="true">
+  <?php
+    include (__DIR__.'/../../layout/modal_edit_message.phtml');
+  ?>
 </div>

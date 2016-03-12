@@ -1,0 +1,63 @@
+<?php
+    $col = 3;
+?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="editModalLabel">Create new Message</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <form action="guestbook/index/create" method="POST" class="form-horizontal" role='form' id='edit_message_form'>
+                        
+                        <input type="hidden" name="id" value="0"/>
+                        
+                        <div class="form-group">
+                            <label for="inputUserName" class="col-sm-<?= $col; ?> control-label">* User Name</label>
+                            <div class="col-sm-<?= 12-$col; ?>">
+                                <input type="text" name="user_name" class="form-control" id="inputUserName" 
+                                       placeholder="only letters, numbers and spaces, from 2 to 50 char" required/>
+                            </div>
+                        </div>
+                        <ul id="errorInputUserName"></ul>
+                        
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-sm-<?= $col; ?> control-label">* E-mail</label>
+                            <div class="col-sm-<?= 12-$col; ?>">
+                                <input type="email" name="email" class="form-control" id="inputEmail" 
+                                       placeholder="E-mail, max 100 char" required/>
+                            </div>
+                        </div>
+                        <ul id="errorInputEmail"></ul>
+                        
+                        <div class="form-group">
+                            <label for="inputHomepage" class="col-sm-<?= $col; ?> control-label">Homepage (URL)</label>
+                            <div class="col-sm-<?= 12-$col; ?>">
+                                <input type="url" name="homepage" class="form-control" id="inputHomepage" 
+                                       placeholder="Homepage, max 100 char"/>
+                            </div>
+                        </div>
+                        <ul id="errorinputHomepage"></ul>
+                        
+                        <div class="form-group">
+                            <label for="inputText" class="col-sm-<?= $col; ?> control-label">* Message</label>
+                            <div class="col-sm-<?= 12-$col; ?>">
+                                <textarea name="text" class="form-control" id="inputText" 
+                                    placeholder="Your Message" style="resize:vertical; min-height:200px" required></textarea>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    <br/>
+                    <div><strong>* - required fields</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <input type="submit" name="submit" value="Create" class="btn btn-primary" form="edit_message_form"/>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ return array(
         'invokables' => array(
             'Guestbook\Controller\Index' => 'Guestbook\Controller\IndexController',
             'Guestbook\Controller\Admin' => 'Guestbook\Controller\AdminController',
+            'Guestbook\Controller\Auth' => 'Guestbook\Controller\AuthController',
         ),
     ),
     'router' => array(
@@ -38,6 +39,7 @@ return array(
     'guestbook_guard' => array(
         'allow' => array(
             array(array('admin', 'guest'), 'Guestbook\Controller\Index'),
+            array(array('admin', 'guest'), 'Guestbook\Controller\Auth'),
             array(array('admin'), 'Guestbook\Controller\Admin'),
             array(array('guest'), 'Guestbook\Controller\Admin', 'login'),
         ),
