@@ -23,6 +23,7 @@ function ajaxAction(action_name, path, obj){
     $.post(path, params, 
             function(data){
 //                alert(data);
+//                $('#test_div').html(data);
                 try{
                     $.parseJSON(data);
                 }catch(e){

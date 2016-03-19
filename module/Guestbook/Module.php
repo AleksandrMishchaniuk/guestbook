@@ -7,6 +7,13 @@ use Zend\Permissions\Acl\Acl;
 use Guestbook\Resources\Resource;
 use Zend\Session\Container;
 
+use Guestbook\Form\EditMessageForm;
+use Guestbook\Form\EditMessageFilter;
+use Zend\Db\ResultSet\ResultSet;
+use Guestbook\Model\Message;
+use Guestbook\Model\MessageTable;
+use Zend\Db\TableGateway\TableGateway;
+
 class Module implements AutoloaderProviderInterface
 {
     protected $acl;
@@ -29,6 +36,30 @@ class Module implements AutoloaderProviderInterface
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
+    }
+    
+    public function getServiceConfig() {
+        return array(
+            'factories' => array(
+                'MessageTableGateway' => function($sm){
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $rs = new ResultSet();
+                    $rs->setArrayObjectPrototype(new Message());
+                    return new TableGateway('message', $dbAdapter, NULL, $rs);
+                },
+                'MessageTable' => function($sm){
+                    return new MessageTable($sm->get('MessageTableGateway'));
+                },
+                'EditMessageForm' => function($sm){
+                    $form = new EditMessageForm();
+                    $form->setInputFilter($sm->get('EditMessageFilter'));
+                    return $form;
+                },
+                'EditMessageFilter' => function($sm){
+                    return new EditMessageFilter();
+                },
+            ),
+        );
     }
     
     public function onBootstrap($e) {

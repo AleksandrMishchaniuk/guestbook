@@ -10,11 +10,6 @@ class EditMessageFilter extends InputFilter {
         
         $this->add(array(
             'name' => 'id',
-//            'filters' => array(
-//                array(
-//                    'name' => 'ToInt',
-//                ),
-//            ),
             'validators' => array(
                 array(
                     'name' => 'Regex',
@@ -62,6 +57,7 @@ class EditMessageFilter extends InputFilter {
         
         $this->add(array(
             'name' => 'homepage',
+            'required' => FALSE,
             'validators' => array(
                 array(
                     'name' => 'Uri',
