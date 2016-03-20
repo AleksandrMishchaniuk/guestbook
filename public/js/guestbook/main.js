@@ -39,10 +39,20 @@ $().ready(function(){
         $('[name="email"]', this).val('').parent().parent().removeClass('has-error');
         $('[name="homepage"]', this).val('').parent().parent().removeClass('has-error');
         $('[name="text"]', this).val('').parent().parent().removeClass('has-error');
+        $('[name="captcha"]', this).val('').parent().parent().removeClass('has-error');
+        $('#imgCaptcha', this).attr('src', '');
         $('#editModalLabel', this).html('Create New Message');
         $('[name="submit"]', this).val('Create');
         $('#edit_message_form', this).attr('action', '/guestbook/'+role+'/create');
     });
+    
+ //-----------------------------------------------------------------------
+//---- Modal Edit Message --> then Show --> update captcha --------------------------------------------------
+//-----------------------------------------------------------------------
+
+    $('#editMessageModal').on('show.bs.modal', captchaUpdate);
+    $("#imgCaptcha").click(captchaUpdate);
+    
     
     $('#sort_message_form').change(function(){
         getData(getSort(), 0, PAGES_IN_LIST);
@@ -107,4 +117,12 @@ function showMessenger(class_name, msgs){
                 .html('&times;')
                 .prependTo(msg);
     }
+}
+
+function captchaUpdate(){
+    var path = '/guestbook/'+role+'/captcha';
+    $.get(path, {}, function(data){
+//        $('#test_div').html(data);
+        $("#imgCaptcha").attr('src', data);
+    });
 }

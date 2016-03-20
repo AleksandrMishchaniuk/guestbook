@@ -3,14 +3,11 @@
 namespace Guestbook\Controller;
 
 use Guestbook\Controller\IndexController;
+use Zend\Session\Container;
 
 class AdminController extends IndexController
 {
-//    public function indexAction()
-//    {
-//        return array();
-//    }
-    
+
     public function showAction() {
         
         $id = $this->params()->fromRoute('id');
@@ -47,6 +44,7 @@ class AdminController extends IndexController
                     'text' => $msg->text,
                 );
             }else if($msg){
+                $session = new Container('guestbook');
                 $form = $this->getServiceLocator()->get('EditMessageForm');
                 $form->bind($msg);
                 $form->setData($post);
@@ -54,6 +52,9 @@ class AdminController extends IndexController
                     $filter = $this->getServiceLocator()->get('EditMessageFilter');
                     $this->answer['ok'] = 0;
                     $this->answer['msg'] = $filter->getInvalidInput();
+                }else if($post->captcha !== $session->captcha){
+                    $this->answer['ok'] = 0;
+                    $this->answer['msg']['captcha'] = 'wrong captcha';
                 }else{
                     $msg->short_text = (strlen($msg->text)<100)? 
                             $msg->text: mb_substr($msg->text, 0, 97, 'UTF-8').'...';

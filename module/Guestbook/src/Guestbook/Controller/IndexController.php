@@ -5,6 +5,8 @@ namespace Guestbook\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Guestbook\Form\LoginForm;
 use Guestbook\Model\Message;
+use Gregwar\Captcha\CaptchaBuilder;
+use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
@@ -91,26 +93,11 @@ class IndexController extends AbstractActionController
         die();
     }
     
-//    public function saveAction() {
-//        if($this->request->isPost()){
-//            $post = $this->request->getPost();
-//            if(isset($post['id'])){
-//                if($this->msg_table->getMessage($post['id'])){
-//                    if(method_exists($this, 'editAction')){
-//                        $this->editAction();
-//                    }
-//                }else{
-//                    $this->createAction();
-//                }
-//            }
-//        }
-//        echo json_encode($this->answer);
-//        die();
-//    }
-
+    
     public function createAction() {
         
         if($this->request->isPost()){
+            $session = new Container('guestbook');
             $post = $this->request->getPost();
             $form = $this->getServiceLocator()->get('EditMessageForm');
             $form->setData($post);
@@ -118,6 +105,9 @@ class IndexController extends AbstractActionController
                 $filter = $this->getServiceLocator()->get('EditMessageFilter');
                 $this->answer['ok'] = 0;
                 $this->answer['msg'] = $filter->getInvalidInput();
+            }else if($post->captcha !== $session->captcha){
+                $this->answer['ok'] = 0;
+                $this->answer['msg']['captcha'] = 'wrong captcha';
             }else{
                 $data = $form->getData();
                 $data['short_text'] = (strlen($data['text'])<100)? 
@@ -141,7 +131,6 @@ class IndexController extends AbstractActionController
     }
     
     public function showAction() {
-        
         $id = $this->params()->fromRoute('id');
         $msg = $this->getMsgTable()->getMessage($id);
         if($msg){
@@ -157,5 +146,18 @@ class IndexController extends AbstractActionController
         echo json_encode($this->answer);
         die();
     }
-
+    
+    
+    public function captchaAction() {
+        $session = new Container('guestbook');
+        
+        $builder = new CaptchaBuilder;
+        $builder->build();
+        
+        $session->captcha = $builder->getPhrase();
+        
+        echo $builder->inline();
+        die();
+    }
+    
 }

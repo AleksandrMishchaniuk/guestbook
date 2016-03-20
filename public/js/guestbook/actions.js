@@ -43,13 +43,15 @@ function actionUpdateList(data){
                 });
             }catch(e){}
         }
+        
         var count = (data['data']['paginator']['count'])? (data['data']['paginator']['count']): 0;
         var offset = (data['data']['paginator']['offset'])? (data['data']['paginator']['offset']): 0;
         if(offset > count){
             offset = floor(count/PAGES_IN_LIST)*PAGES_IN_LIST;
-        }else if(offset == count){
+        }else if(offset === count){
             offset = count-PAGES_IN_LIST;
         }
+        
         $('.simplePaginator').pagination({
             items: count,
             itemsOnPage: PAGES_IN_LIST,
@@ -79,6 +81,8 @@ function actionMessageSave(data){
         for(var key in data['msg']){
             $('#edit_message_form [name="'+key+'"]').parent().parent().addClass('has-error');
         }
+        $('#edit_message_form [name="captcha"]').val('');
+        captchaUpdate();
     }
 }
 
